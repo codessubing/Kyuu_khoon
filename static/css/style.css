@@ -14701,4 +14701,28 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
     [data-theme-version="dark"] .footer .copyright p {
       color: #fff; }
 
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper .form-control {
+    padding-right: 45px;
+}
+
+.togglePassword {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    cursor: pointer;
+    font-size: 24px;
+    color: #777;
+}
+
+.togglePassword:hover {
+    color: #007bff;
+}
 /*# sourceMappingURL=style.css.map */

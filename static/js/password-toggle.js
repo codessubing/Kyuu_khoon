@@ -1,3 +1,4 @@
+console.log("password toggle loaded");
 document.querySelectorAll(".togglePassword").forEach(function (icon) {
 
     icon.addEventListener("click", function () {
