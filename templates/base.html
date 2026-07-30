@@ -1,0 +1,396 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Blood Bank Managment</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static './images/favicon.png' %}">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        #main-wrapper {
+            flex: 1;
+        }
+
+        .content-body {
+            flex: 1;
+            padding: 20px; /* Adjust as needed */
+            box-sizing: border-box;
+        }
+    
+        .footer {
+            margin-top: auto;
+        }
+    </style>
+    
+
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <div class="brand-logo h-100">
+                <a class="d-flex align-items-center justify-content-center p-0 h-100">
+                <b class="logo-abbr"><span class="material-symbols-outlined text-white" style="font-size:x-large; font-weight:100;">healing</span></b>
+                <span class="logo-compact">Blood Bank Managment</span>
+                <span class="brand-title">
+                    <h5 class="text-white pt-1">Blood Bank Managment</h5>
+                </span>
+                </a>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content clearfix">
+
+                <div class="nav-control d-flex">
+                    <div class="hamburger">
+                        <span class="toggle-icon"><i class="icon-menu"></i></span>
+                    </div>
+                    <h4 class="mt-2 ml-2 d-none d-md-block">Welcome, <strong>{{request.user}}</strong></h4>
+                </div>
+
+                <div class="header-right mr-2">
+                    <ul class="clearfix">
+                        <li class="icons dropdown">
+                            <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
+                                <span class="activity active"></span>
+                                <img src="{% static 'images/user/6.jpg' %}" height="40" width="40" alt="">
+                            </div>
+                            <div class="drop-down dropdown-profile dropdown-menu w-auto">
+                                <div class="dropdown-content-body">
+                                    <ul class="list-unstyled">
+                                        <li>Profile</li>
+                                        <li>
+                                            <a href="#"><i class="icon-user"></i> <span>Profile</span></a>
+                                        </li>
+                                        <hr class="my-2">
+                                        <li>Settings</li>
+                                        <li><a href="{% url 'logout' %}"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="nk-sidebar">
+            <div class="nk-nav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label text-dark font-weight-bold">Dashboard</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="material-symbols-outlined menu-icon">dashboard</i><span class="nav-text">Dashboard</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="/" {% if request.resolver_match.url_name == 'patient-dashboard' %}class="text-primary"{% endif %}><i class="material-symbols-outlined menu-icon">home</i>Home</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label text-dark font-weight-bold">Blood</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="material-symbols-outlined menu-icon text-secondary">bloodtype</i><span class="nav-text">Blood</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'blood-request' %}" class="{% if request.resolver_match.url_name == 'blood-request' %}text-primary{% endif %}"><i class="material-symbols-outlined menu-icon">heart_plus</i>Request</a></li>
+                            <li><a href="{% url 'blood-history' %}" class="{% if request.resolver_match.url_name == 'blood-history' %}text-primary{% endif %}"><i class="material-symbols-outlined menu-icon">history</i>History</a></li>
+                        </ul>
+                    </li>
+                    {% for group in user.groups.all %}
+                        {% if group.name == 'Donor' or group.name == 'Admin' %}
+                    <li class="nav-label text-dark font-weight-bold">Donor</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="material-symbols-outlined menu-icon">vaccines</i><span class="nav-text">Donor</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'donor-blood-request' %}" class="{% if request.resolver_match.url_name == 'donor-blood-request' %}text-primary{% endif %}"><i class="material-symbols-outlined menu-icon">heart_plus</i>Request</a></li>
+                            <li><a href="{% url 'donor-blood-history' %}" class="{% if request.resolver_match.url_name == 'donor-blood-history' %}text-primary{% endif %}"><i class="material-symbols-outlined menu-icon">history</i>History</a></li>
+                        </ul>
+                    </li>
+                        {% endif %}
+                        {% if group.name == "Admin" %}
+                        <li class="nav-label text-dark font-weight-bold">Admin</li>
+                        <li>
+                            <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                                <i class="material-symbols-outlined menu-icon">stethoscope</i><span class="nav-text">Admin</span>
+                            </a>
+                            <ul aria-expanded="false">
+                                <li>
+                                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                                        <i class="material-symbols-outlined menu-icon text-secondary">bloodtype</i><span class="nav-text">Blood</span>
+                                    </a>
+                                    <ul aria-expanded="false">
+                                        <li><a href="{% url 'pending_request_patient' %}" class="{% if request.resolver_match.url_name == 'pending_request_patient' %}text-primary{% endif %}"><i class="material-symbols-outlined menu-icon">heart_plus</i>Pending Request List</a></li>
+                                        <li><a href="{% url 'history_request_patient' %}" class="{% if request.resolver_match.url_name == 'history_request_patient' %}text-primary{% endif %}"><i class="material-symbols-outlined menu-icon">history</i>History</a></li>
+                                        <li><a href="{% url 'pateint_details' %}" class="{% if request.resolver_match.url_name == 'pateint_details' %}text-primary{% endif %}"><i class="material-symbols-outlined menu-icon">badge</i>User Details</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                                        <i class="material-symbols-outlined menu-icon">vaccines</i><span class="nav-text">Donor</span>
+                                    </a>
+                                    <ul aria-expanded="false">
+                                        <li><a href="{% url 'pending_request_donor' %}" class="{% if request.resolver_match.url_name == 'pending_request_donor' %}text-primary{% endif %}"><i class="material-symbols-outlined menu-icon">heart_plus</i>Pending Request List</a></li>
+                                        <li><a href="{% url 'history_request_donor' %}" class="{% if request.resolver_match.url_name == 'history_request_donor' %}text-primary{% endif %}"><i class="material-symbols-outlined menu-icon">history</i>History</a></li>
+                                        <li><a href="{% url 'donor_details' %}" class="{% if request.resolver_match.url_name == 'donor_details' %}text-primary{% endif %}"><i class="material-symbols-outlined menu-icon">badge</i>User Details</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    {% block navbar_pages %}{% endblock navbar_pages %}
+                </div>
+            </div>
+            <!-- row -->
+
+            <div class="container-fluid">
+                {% block body %}{% endblock body %}
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright &copy; Designed & Developed by <a href="Team Kyuu" target="_blank">Team Kyuu</a> 2026</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="{% static 'plugins/common/common.min.js' %}"></script>
+    <script src="{% static 'js/custom.min.js' %}"></script>
+    <script src="{% static 'js/settings.js' %}"></script>
+    <script src="{% static 'js/gleek.js' %}"></script>
+    <script src="{% static 'js/styleSwitcher.js' %}"></script>
+
+    <script src="{% static 'plugins/tables/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'plugins/tables/js/datatable-init/datatable-basic.min.js' %}"></script>
+        <!-- ********************************** -->
+    <!-- AI Chatbot Widget Start -->
+    <!-- ********************************** -->
+    <button id="chat-toggle" class="btn btn-danger rounded-circle" style="position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4); z-index: 9999; display: flex; align-items: center; justify-content: center; font-size: 24px; border: none;">
+        💬
+    </button>
+
+    <div id="chat-box" style="display: none; position: fixed; bottom: 100px; right: 30px; width: 350px; height: 450px; background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); flex-direction: column; z-index: 9999; overflow: hidden; font-family: inherit;">
+        <!-- Chat Header -->
+        <div style="background: #dc3545; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
+            <span>🩸 Kyuu AI</span>
+            <button id="chat-close" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; line-height: 1;">&times;</button>
+        </div>
+        
+        <!-- Chat Messages Area -->
+        <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa; display: flex; flex-direction: column; gap: 10px;">
+            <div style="align-self: flex-start; background: #e9ecef; color: #333; padding: 10px 15px; border-radius: 15px 15px 15px 0; max-width: 85%; font-size: 14px; line-height: 1.4;">
+                Hello! I'm the Kyuu AI. How can I help you with blood donation, eligibility, or requests today?
+            </div>
+        </div>
+        
+        <!-- Chat Input Area -->
+        <div style="display: flex; padding: 12px; background: white; border-top: 1px solid #eee;">
+            <input type="text" id="chat-input" placeholder="Type your question..." style="flex: 1; padding: 10px 15px; border: 1px solid #ced4da; border-radius: 20px; outline: none; font-size: 14px;">
+            <button id="chat-send" style="margin-left: 8px; padding: 10px 15px; background: #dc3545; color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+                ➤
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('chat-toggle');
+            const closeBtn = document.getElementById('chat-close');
+            const chatBox = document.getElementById('chat-box');
+            const sendBtn = document.getElementById('chat-send');
+            const inputField = document.getElementById('chat-input');
+            const messagesDiv = document.getElementById('chat-messages');
+            let chatHistory = [];
+
+            function toggleChat() {
+                chatBox.style.display = chatBox.style.display === 'none' ? 'flex' : 'none';
+                if (chatBox.style.display === 'flex') inputField.focus();
+            }
+
+            toggleBtn.addEventListener('click', toggleChat);
+            closeBtn.addEventListener('click', toggleChat);
+
+            function appendMessage(role, text) {
+                const msgDiv = document.createElement('div');
+                msgDiv.style.maxWidth = '85%';
+                msgDiv.style.fontSize = '14px';
+                msgDiv.style.lineHeight = '1.4';
+                
+                if (role === 'user') {
+                    msgDiv.style.alignSelf = 'flex-end';
+                    msgDiv.style.background = '#dc3545';
+                    msgDiv.style.color = 'white';
+                    msgDiv.style.borderRadius = '15px 15px 0 15px';
+                    msgDiv.style.padding = '10px 15px';
+                } else {
+                    msgDiv.style.alignSelf = 'flex-start';
+                    msgDiv.style.background = '#e9ecef';
+                    msgDiv.style.color = '#333';
+                    msgDiv.style.borderRadius = '15px 15px 15px 0';
+                    msgDiv.style.padding = '10px 15px';
+                }
+                msgDiv.textContent = text;
+                messagesDiv.appendChild(msgDiv);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+
+            async function sendMessage() {
+                const text = inputField.value.trim();
+                if (!text) return;
+
+                appendMessage('user', text);
+                inputField.value = '';
+                
+                // Show typing indicator
+                const typingDiv = document.createElement('div');
+                typingDiv.id = 'typing-indicator';
+                typingDiv.style.alignSelf = 'flex-start';
+                typingDiv.style.background = '#e9ecef';
+                typingDiv.style.padding = '10px 15px';
+                typingDiv.style.borderRadius = '15px 15px 15px 0';
+                typingDiv.style.fontSize = '12px';
+                typingDiv.style.color = '#666';
+                typingDiv.textContent = 'Buddy is typing...';
+                messagesDiv.appendChild(typingDiv);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+                chatHistory.push({"role": "user", "content": text});
+
+                try {
+                    const response = await fetch('/api/chat/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken') // Secure Django CSRF handling
+                        },
+                        body: JSON.stringify({message: text, history: chatHistory})
+                    });
+                    
+                    const indicator = document.getElementById('typing-indicator');
+                    if(indicator) indicator.remove();
+
+                    const data = await response.json();
+                    if (data.reply) {
+                        appendMessage('bot', data.reply);
+                        chatHistory.push({"role": "assistant", "content": data.reply});
+                    } else {
+                        appendMessage('bot', "Sorry, I encountered an error. Please try again.");
+                    }
+                } catch (error) {
+                    const indicator = document.getElementById('typing-indicator');
+                    if(indicator) indicator.remove();
+                    appendMessage('bot', "Sorry, I'm having trouble connecting to the server.");
+                }
+            }
+
+            sendBtn.addEventListener('click', sendMessage);
+            inputField.addEventListener('keypress', (e) => { 
+                if(e.key === 'Enter') sendMessage(); 
+            });
+
+            // Helper function to get CSRF token in Django
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+    </script>
+    <!-- ********************************** -->
+    <!-- AI Chatbot Widget End -->
+    <!-- ********************************** -->
+
+</body>
+</html>
