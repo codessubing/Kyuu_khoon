@@ -61,6 +61,49 @@
                             </div>
                         </div>
                     </div>
+                    <div class="password-wrapper">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="Enter Password"
+                      />
+
+                      <span
+                        class="material-symbols-outlined togglePassword"
+                        data-target="password"
+                      >
+                        visibility_off
+                      </span>
+                    </div>
+                    <button
+                      type="submit"
+                      class="btn login-form__btn submit w-100"
+                    >
+                      Sign In
+                    </button>
+                  </form>
+                  <p class="login-form__footer text-center">
+                    <span class="material-symbols-outlined mr-2 text-primary"
+                      >bloodtype</span
+                    ><a
+                      href="{% url 'patient-register' %}"
+                      class="text-primary"
+                      style="vertical-align: super"
+                      >Patient Register</a
+                    >
+                  </p>
+                  <p class="login-form__footer text-center">
+                    <span class="material-symbols-outlined mr-2 text-primary"
+                      >vaccines</span
+                    ><a
+                      href="{% url 'donor-register' %}"
+                      class="text-primary"
+                      style="vertical-align: super"
+                      >Donor Register</a
+                    >
+                  </p>
                 </div>
             </div>
         </div>
