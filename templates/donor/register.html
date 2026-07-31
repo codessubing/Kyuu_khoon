@@ -80,17 +80,23 @@
                         >Phone Number</label
                       >
                       <input
-                        type="number"
+                        type="tel"
                         class="form-control"
                         id="{{ form.phone.id_for_label }}"
                         name="{{ form.phone.name }}"
+                        value="{{ form.phone.value|default:'' }}"
                         placeholder="Enter Phone Number"
-                        min="999999999"
-                        max="9999999999"
+                        pattern="[0-9]{10}"
+                        maxlength="10"
+                        required
                       />
-                      <span id="phoneError" style="color: red"
-                        >Phone Number Must Be 10</span
-                      >
+                      <span 
+                       id="phoneError"   
+                       class="text-danger"
+                       style="display: none;">
+                         Phone Number must be 10 digits.
+                      </span>
+                    
                       {% if form.phone.errors %}
                       <div class="text-danger">
                         {% for error in form.phone.errors %} {{ error }} 
